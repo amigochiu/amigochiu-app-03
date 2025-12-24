@@ -470,7 +470,7 @@ select option {
     /* Lower it back down a bit? Or keep 1rem? User wanted "smaller and lighter". Let's stick to watermark position. */
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.6rem;
+    font-size: 0.75rem;
     /* Smaller than 0.7rem */
     color: var(--text-primary);
     opacity: 0.4;
