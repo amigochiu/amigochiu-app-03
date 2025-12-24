@@ -358,15 +358,10 @@ select option {
     background: #f8fafc;
 }
 
-.mic-btn.active {
-    background: #ef4444;
-    /* red-500 */
-    color: white;
-    border-color: #ef4444;
-    animation: pulse-shadow 2s infinite;
-}
 
-.swap-btn.active {
+
+
+#swap-btn.active {
     background: #ef4444;
     /* red-500 */
     color: white;
