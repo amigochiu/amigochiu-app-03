@@ -486,3 +486,9 @@ select option {
     padding-bottom: env(safe-area-inset-bottom, 0);
     white-space: nowrap;
 }
+/* Force Icon Size */
+.placeholder-icon {
+    width: 64px !important;
+    height: 64px !important;
+    margin-bottom: 0.5rem;
+}
