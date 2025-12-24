@@ -462,16 +462,22 @@ select option {
     font-weight: 700;
     animation: pulse 2s infinite;
 }
+
 /* Version Tag */
 .version-tag {
     position: absolute;
-    bottom: 0.5rem;
+    bottom: 1rem;
+    /* Move up slightly */
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--text-primary);
-    opacity: 0.3;
+    opacity: 0.15;
+    /* More watermark-like */
     pointer-events: none;
-    font-weight: 600;
+    font-weight: 700;
+    z-index: 0;
+    /* Behind text if possible, but card bg is on parent */
     padding-bottom: env(safe-area-inset-bottom, 0);
+    white-space: nowrap;
 }
