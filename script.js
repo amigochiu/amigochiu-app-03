@@ -49,9 +49,9 @@ const WAITING_STRINGS = {
 
 const THEMES = [
     { id: 'candy', name: 'Candy Pop', colorA: '#ec4899', colorB: '#8b5cf6' },
-    { id: 'summer', name: 'Sunny Day', colorA: '#f59e0b', colorB: '#ea580c' },
-    { id: 'ocean', name: 'Ocean Breeze', colorA: '#06b6d4', colorB: '#3b82f6' },
-    { id: 'forest', name: 'Deep Forest', colorA: '#10b981', colorB: '#059669' },
+    { id: 'summer', name: 'Sunny Day', colorA: '#F97316', colorB: '#0EA5E9' }, // Orange vs Sky
+    { id: 'ocean', name: 'Ocean Breeze', colorA: '#06b6d4', colorB: '#4338CA' }, // Cyan vs Indigo
+    { id: 'forest', name: 'Deep Forest', colorA: '#84CC16', colorB: '#14532D' }, // Lime vs Dark Green
 ];
 
 /* State */
@@ -232,6 +232,14 @@ function renderPlaceholder(container, lang, isListening, isActive) {
 /* Helper to update placeholder if it exists */
 function updatePlaceholder(container, lang, isListening, isActive) {
     if (!container) return;
+
+    // Priority 1: If bubbles exist, NO placeholder allowed.
+    if (container.querySelector('.msg-bubble')) {
+        const ph = container.querySelector('.empty-placeholder');
+        if (ph) ph.remove();
+        return;
+    }
+
     const ph = container.querySelector('.empty-placeholder');
     if (ph) {
         // Re-render completely to update icon and text
@@ -418,6 +426,10 @@ function handleFinalSpeech(text) {
 /* --- BUBBLES --- */
 function addBubble(container, text, classes) {
     if (!container || !text) return;
+
+    // Priority: Remove placeholder logic
+    const ph = container.querySelector('.empty-placeholder');
+    if (ph) ph.remove();
 
     // Check history limit (Max 5)
     // Filter out placeholders and temp bubbles if any, though temp should be removed by now.
