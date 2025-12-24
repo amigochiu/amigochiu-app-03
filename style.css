@@ -302,12 +302,7 @@ select option {
     transform: scale(0.95);
 }
 
-#bar-mic-btn.active {
-    background: white;
-    color: var(--mic-active);
-    animation: pulse 1.5s infinite;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
-}
+
 
 /* Swap Button Custom */
 #swap-btn {
@@ -361,26 +356,35 @@ select option {
 
 
 
+#bar-mic-btn.active,
 #swap-btn.active {
-    background: #ef4444;
-    /* red-500 */
-    color: white;
-    animation: pulse-shadow 2s infinite;
-    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    /* Semi-transparent red */
+    color: #ef4444;
+    /* Red icon */
+    border-color: rgba(239, 68, 68, 0.3);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    animation: pulse-glass 2s infinite;
+    box-shadow: none;
 }
 
-/* New pulse keyframes for buttons (shadow only) */
-@keyframes pulse-shadow {
+
+/* Glassmorphism pulse keyframes */
+@keyframes pulse-glass {
     0% {
-        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+        border-color: rgba(239, 68, 68, 0.4);
     }
 
     70% {
-        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+        box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+        border-color: rgba(239, 68, 68, 0.1);
     }
 
     100% {
-        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+        border-color: rgba(239, 68, 68, 0.4);
     }
 }
 
