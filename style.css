@@ -237,7 +237,7 @@ body.theme-forest {
 /* --- CONTROL BAR --- */
 .control-bar {
     flex: none;
-    background: var(--control-bg-gradient, var(--bar-bg));
+    background: var(--bar-bg);
     border-radius: 999px;
     padding: 0.35rem 0.75rem;
     display: flex;
@@ -245,8 +245,7 @@ body.theme-forest {
     justify-content: space-between;
     z-index: 20;
     box-shadow: var(--bar-shadow);
-    color: white;
-    /* Force white text for solid gradient */
+    color: var(--bar-text);
     height: 3.5rem;
 }
 

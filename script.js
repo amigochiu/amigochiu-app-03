@@ -49,9 +49,9 @@ const WAITING_STRINGS = {
 
 const THEMES = [
     { id: 'candy', name: 'Candy Pop', colorA: '#ec4899', colorB: '#8b5cf6' },
-    { id: 'mars', name: 'Mars & Neptune', colorA: '#DC2626', colorB: '#2563EB' }, // Red vs Blue
-    { id: 'twilight', name: 'Golden Twilight', colorA: '#D97706', colorB: '#4F46E5' }, // Amber vs Indigo
-    { id: 'nebula', name: 'Jungle Nebula', colorA: '#16A34A', colorB: '#9333EA' }, // Green vs Purple
+    { id: 'summer', name: 'Sunny Day', colorA: '#f59e0b', colorB: '#ea580c' },
+    { id: 'ocean', name: 'Ocean Breeze', colorA: '#06b6d4', colorB: '#3b82f6' },
+    { id: 'forest', name: 'Deep Forest', colorA: '#10b981', colorB: '#059669' },
 ];
 
 /* State */
@@ -59,7 +59,7 @@ let state = {
     sourceLang: 'zh-TW', // A
     targetLang: 'ja-JP', // B
     isListening: false,
-    theme: 'candy', // Set default to candy
+    theme: 'ocean', // Changed default theme to ocean
     activeSide: 'source', // 'source' or 'target'
     isMuted: false, // Default Not Muted
     isSpeaking: false, // TTS playing status
@@ -91,9 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     elementsId.forEach(id => els[id] = getEl(id));
 
     initLanguages();
-    initLanguages();
     initThemes();
-    setTheme(state.theme); // Apply default theme logic
     bindEvents();
 
     // Initial Render
@@ -232,10 +230,11 @@ function renderPlaceholder(container, lang, isListening, isActive) {
 }
 
 /* Helper to update placeholder if it exists */
+/* Helper to update placeholder if it exists */
 function updatePlaceholder(container, lang, isListening, isActive) {
     if (!container) return;
 
-    // Priority 1: If bubbles exist, NO placeholder allowed.
+    // Priority: If bubbles exist, ensure NO placeholder is shown
     if (container.querySelector('.msg-bubble')) {
         const ph = container.querySelector('.empty-placeholder');
         if (ph) ph.remove();
