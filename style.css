@@ -358,6 +358,37 @@ select option {
     background: #f8fafc;
 }
 
+.mic-btn.active {
+    background: #ef4444;
+    /* red-500 */
+    color: white;
+    border-color: #ef4444;
+    animation: pulse-shadow 2s infinite;
+}
+
+.swap-btn.active {
+    background: #ef4444;
+    /* red-500 */
+    color: white;
+    animation: pulse-shadow 2s infinite;
+    border-color: #ef4444;
+}
+
+/* New pulse keyframes for buttons (shadow only) */
+@keyframes pulse-shadow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+}
+
 .theme-option.active {
     background: #f1f5f9;
     color: var(--color-source);

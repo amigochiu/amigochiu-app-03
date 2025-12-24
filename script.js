@@ -260,6 +260,7 @@ function updateUI() {
 
     if (state.isListening) {
         els['bar-mic-btn'].classList.add('active');
+        swapBtn.classList.add('active'); // Add pulse effect
 
         // Set Arrow Icon based on active side
         if (state.activeSide === 'source') {
@@ -276,6 +277,7 @@ function updateUI() {
     } else {
         // Idle State -> Show Swap Icon
         els['bar-mic-btn'].classList.remove('active');
+        swapBtn.classList.remove('active'); // Remove pulse effect
         swapBtn.innerHTML = '<i data-lucide="arrow-up-down" size="20"></i>';
         els['card-source'].classList.remove('listening-active');
         els['card-target'].classList.remove('listening-active');
