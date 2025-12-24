@@ -358,11 +358,11 @@ select option {
 
 #bar-mic-btn.active,
 #swap-btn.active {
-    background: rgba(239, 68, 68, 0.85);
-    /* High opacity red for visibility */
+    background: rgba(239, 68, 68, 0.25);
+    /* Semi-transparent red, slightly increased for contrast */
     color: white;
-    /* White icon */
-    border-color: rgba(239, 68, 68, 0.5);
+    /* WHITE icon always */
+    border-color: rgba(239, 68, 68, 0.4);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     animation: pulse-glass 2s infinite;
