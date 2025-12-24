@@ -194,7 +194,7 @@ body.theme-forest {
     padding: 0.75rem 1rem;
     border-radius: 1rem;
     background: var(--msg-bubble-bg);
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 700;
     line-height: 1.4;
     width: fit-content;
