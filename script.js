@@ -196,7 +196,7 @@ function renderPlaceholder(container, lang, isListening) {
     if (!container) return;
     container.innerHTML = `
         <div class="empty-placeholder">
-            <i data-lucide="${isListening ? 'mic' : 'mic-off'}" size="64" style="margin-bottom:0.5rem"></i>
+            <i data-lucide="${isListening ? 'mic' : 'mic-off'}" style="width: 64px; height: 64px; margin-bottom: 0.5rem"></i>
             <div>${getUIText(lang, isListening)}</div>
         </div>
     `;
