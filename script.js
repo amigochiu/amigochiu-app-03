@@ -48,10 +48,10 @@ const WAITING_STRINGS = {
 };
 
 const THEMES = [
-    { id: 'candy', name: 'Candy Pop', colorA: '#ec4899', colorB: '#8b5cf6' },
-    { id: 'summer', name: 'Sunny Day', colorA: '#f59e0b', colorB: '#ea580c' },
-    { id: 'ocean', name: 'Ocean Breeze', colorA: '#06b6d4', colorB: '#3b82f6' },
-    { id: 'forest', name: 'Deep Forest', colorA: '#10b981', colorB: '#059669' },
+    { id: 'candy', name: '夢幻糖果', colorA: '#ec4899', colorB: '#8b5cf6' },
+    { id: 'summer', name: '夏日暖陽', colorA: '#f59e0b', colorB: '#ea580c' },
+    { id: 'ocean', name: '蔚藍海洋', colorA: '#06b6d4', colorB: '#3b82f6' },
+    { id: 'forest', name: '靜謐森林', colorA: '#10b981', colorB: '#059669' },
 ];
 
 /* State */
@@ -59,7 +59,7 @@ let state = {
     sourceLang: 'zh-TW', // A
     targetLang: 'ja-JP', // B
     isListening: false,
-    theme: 'ocean', // Changed default theme to ocean
+    theme: 'candy', // Changed default theme to candy
     activeSide: 'source', // 'source' or 'target'
     isMuted: false, // Default Not Muted
     isSpeaking: false, // TTS playing status
