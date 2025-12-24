@@ -85,7 +85,7 @@ body.theme-forest {
 .main-content {
     max-width: 480px;
     /* padding handled by padding-top/bottom/safe-area now, remove fixed padding */
-    padding: 1rem 0;
+    padding: 0;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -94,8 +94,9 @@ body.theme-forest {
     position: relative;
     box-sizing: border-box;
     /* Safe Area for Notch/Home Bar */
-    padding-top: env(safe-area-inset-top, 1rem);
-    padding-bottom: env(safe-area-inset-bottom, 1rem);
+    /* Increased spacing to shrink cards and avoid home bar */
+    padding-top: max(3rem, env(safe-area-inset-top));
+    padding-bottom: max(4rem, env(safe-area-inset-bottom));
     padding-left: max(1.5rem, env(safe-area-inset-left));
     padding-right: max(1.5rem, env(safe-area-inset-right));
 }
@@ -486,6 +487,7 @@ select option {
     padding-bottom: env(safe-area-inset-bottom, 0);
     white-space: nowrap;
 }
+
 /* Force Icon Size */
 .placeholder-icon {
     width: 64px !important;
