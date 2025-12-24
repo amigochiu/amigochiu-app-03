@@ -49,9 +49,9 @@ const WAITING_STRINGS = {
 
 const THEMES = [
     { id: 'candy', name: 'Candy Pop', colorA: '#ec4899', colorB: '#8b5cf6' },
-    { id: 'summer', name: 'Sunny Day', colorA: '#F97316', colorB: '#0EA5E9' }, // Orange vs Sky
-    { id: 'ocean', name: 'Ocean Breeze', colorA: '#06b6d4', colorB: '#4338CA' }, // Cyan vs Indigo
-    { id: 'forest', name: 'Deep Forest', colorA: '#84CC16', colorB: '#14532D' }, // Lime vs Dark Green
+    { id: 'summer', name: 'Sunny Day', colorA: '#ea580c', colorB: '#0284c7' }, // Deep Orange vs Sky Blue
+    { id: 'ocean', name: 'Ocean Breeze', colorA: '#0d9488', colorB: '#1e3a8a' }, // Teal vs Navy
+    { id: 'forest', name: 'Deep Forest', colorA: '#65a30d', colorB: '#064e3b' }, // Lime vs Deep Green
 ];
 
 /* State */

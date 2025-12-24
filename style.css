@@ -237,7 +237,7 @@ body.theme-forest {
 /* --- CONTROL BAR --- */
 .control-bar {
     flex: none;
-    background: var(--bar-bg);
+    background: var(--control-bg-gradient, var(--bar-bg));
     border-radius: 999px;
     padding: 0.35rem 0.75rem;
     display: flex;
