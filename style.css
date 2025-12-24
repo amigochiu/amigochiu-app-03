@@ -467,17 +467,15 @@ select option {
 .version-tag {
     position: absolute;
     bottom: 0.5rem;
-    /* Lower it back down a bit? Or keep 1rem? User wanted "smaller and lighter". Let's stick to watermark position. */
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.6rem;
-    /* Smaller than 0.7rem */
+    font-size: 0.5rem;
+    /* Even smaller */
     color: var(--text-primary);
-    opacity: 0.4;
-    /* Match placeholder opacity */
+    opacity: 0.2;
+    /* Lighter */
     pointer-events: none;
     font-weight: 600;
-    /* Lighter weight */
     z-index: 0;
     padding-bottom: env(safe-area-inset-bottom, 0);
     white-space: nowrap;
