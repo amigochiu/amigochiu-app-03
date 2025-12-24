@@ -59,7 +59,7 @@ let state = {
     sourceLang: 'zh-TW', // A
     targetLang: 'ja-JP', // B
     isListening: false,
-    theme: 'mars', // Changed default theme to mars
+    theme: 'candy', // Set default to candy
     activeSide: 'source', // 'source' or 'target'
     isMuted: false, // Default Not Muted
     isSpeaking: false, // TTS playing status

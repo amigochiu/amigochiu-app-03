@@ -245,7 +245,8 @@ body.theme-forest {
     justify-content: space-between;
     z-index: 20;
     box-shadow: var(--bar-shadow);
-    color: var(--bar-text);
+    color: white;
+    /* Force white text for solid gradient */
     height: 3.5rem;
 }
 
