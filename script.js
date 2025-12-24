@@ -403,6 +403,17 @@ function handleFinalSpeech(text) {
 
 /* --- BUBBLES --- */
 function addBubble(container, text, classes) {
+    if (!container || !text) return;
+
+    // Check history limit (Max 5)
+    // Filter out placeholders and temp bubbles if any, though temp should be removed by now.
+    // We only count actual .msg-bubble.
+    const bubbles = container.querySelectorAll('.msg-bubble:not(.temp)');
+    if (bubbles.length >= 5) {
+        // Remove the oldest (first one)
+        bubbles[0].remove();
+    }
+
     const bubble = document.createElement('div');
     bubble.className = `msg-bubble ${classes}`;
     bubble.textContent = text;
