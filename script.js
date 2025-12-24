@@ -35,6 +35,18 @@ const LISTEN_STRINGS = {
     'vi-VN': 'Đang nghe...'
 };
 
+const WAITING_STRINGS = {
+    'zh-TW': '等待對方開始說話...',
+    'en-US': 'Waiting for speaker...',
+    'ja-JP': '相手の話を待っています...',
+    'ko-KR': '상대방의 말을 기다리는 중...',
+    'es-ES': 'Esperando al orador...',
+    'fr-FR': 'En attente de l\'orateur...',
+    'de-DE': 'Warten auf Sprecher...',
+    'th-TH': 'รอผู้พูด...',
+    'vi-VN': 'Đang chờ người nói...'
+};
+
 const THEMES = [
     { id: 'candy', name: 'Candy Pop', colorA: '#ec4899', colorB: '#8b5cf6' },
     { id: 'summer', name: 'Sunny Day', colorA: '#f59e0b', colorB: '#ea580c' },
@@ -173,8 +185,8 @@ function bindEvents() {
 function clearAll() {
     els['source-chat'].innerHTML = '';
     els['target-chat'].innerHTML = '';
-    renderPlaceholder(els['source-chat'], state.sourceLang, state.isListening && state.activeSide === 'source');
-    renderPlaceholder(els['target-chat'], state.targetLang, state.isListening && state.activeSide === 'target');
+    renderPlaceholder(els['source-chat'], state.sourceLang, state.isListening, state.activeSide === 'source');
+    renderPlaceholder(els['target-chat'], state.targetLang, state.isListening, state.activeSide === 'target');
 }
 
 function setTheme(id) {
@@ -187,32 +199,43 @@ function getLangName(code) {
     return LANGUAGES.find(l => l.code === code)?.name || code;
 }
 
-function getUIText(lang, isListening) {
-    if (isListening) return LISTEN_STRINGS[lang] || LISTEN_STRINGS['en-US'];
+function getUIText(lang, isListening, isActive) {
+    if (isListening) {
+        return isActive ? (LISTEN_STRINGS[lang] || LISTEN_STRINGS['en-US']) : (WAITING_STRINGS[lang] || WAITING_STRINGS['en-US']);
+    }
     return UI_STRINGS[lang] || UI_STRINGS['en-US'];
 }
 
-function renderPlaceholder(container, lang, isListening) {
+function renderPlaceholder(container, lang, isListening, isActive) {
     if (!container) return;
+    const iconName = isListening ? (isActive ? 'mic' : 'mic-off') : 'mic-off';
+    // Logic: 
+    // Idle: mic-off (or user preference)
+    // Listening + Active: mic
+    // Listening + Waiting: mic-off (or loader?) -> User said "Waiting...", let's keep mic-off or distinct icon. 
+    // Let's stick to mic-off for waiting to indicate "Not your turn" or just idle icon. Use 'loader' if available? Lucide has 'loader-2'.
+    // User requested text change mostly. Let's keep icon simple for now. 
+    // Actually, Waiting could use 'ear' or 'user' or just 'mic-off'. Let's use 'mic-off' for consistency with "not recording me".
+
     container.innerHTML = `
         <div class="empty-placeholder">
-            <i data-lucide="${isListening ? 'mic' : 'mic-off'}" class="placeholder-icon"></i>
-            <div>${getUIText(lang, isListening)}</div>
+            <i data-lucide="${iconName}" size="64" class="placeholder-icon"></i>
+            <div>${getUIText(lang, isListening, isActive)}</div>
         </div>
     `;
     if (window.lucide) lucide.createIcons();
 }
 
 /* Helper to update placeholder if it exists */
-function updatePlaceholder(container, lang, isListening) {
+function updatePlaceholder(container, lang, isListening, isActive) {
     if (!container) return;
     const ph = container.querySelector('.empty-placeholder');
     if (ph) {
         // Re-render completely to update icon and text
-        renderPlaceholder(container, lang, isListening);
+        renderPlaceholder(container, lang, isListening, isActive);
     } else if (container.children.length === 0) {
         // If empty, render
-        renderPlaceholder(container, lang, isListening);
+        renderPlaceholder(container, lang, isListening, isActive);
     }
 }
 
@@ -247,8 +270,9 @@ function updateUI() {
     }
 
     // Update Placeholders
-    updatePlaceholder(els['source-chat'], state.sourceLang, state.isListening && state.activeSide === 'source');
-    updatePlaceholder(els['target-chat'], state.targetLang, state.isListening && state.activeSide === 'target');
+    // state.activeSide is the side we are LISTENING to.
+    updatePlaceholder(els['source-chat'], state.sourceLang, state.isListening, state.activeSide === 'source');
+    updatePlaceholder(els['target-chat'], state.targetLang, state.isListening, state.activeSide === 'target');
 
     if (window.lucide) lucide.createIcons();
 }
