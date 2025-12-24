@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initLanguages();
     initThemes();
     bindEvents();
-    
+
     // Initial Render
     renderPlaceholder(els['source-chat'], state.sourceLang, false);
     renderPlaceholder(els['target-chat'], state.targetLang, false);
@@ -156,7 +156,7 @@ function bindEvents() {
     document.body.onclick = () => els['theme-menu']?.classList.add('hidden');
 
     els['bar-mic-btn'].onclick = toggleListening;
-    
+
     // Clear buttons
     els['clear-btn'].onclick = clearAll;
 
@@ -196,7 +196,7 @@ function renderPlaceholder(container, lang, isListening) {
     if (!container) return;
     container.innerHTML = `
         <div class="empty-placeholder">
-            <i data-lucide="${isListening ? 'mic' : 'mic-off'}" size="32" style="margin-bottom:0.5rem"></i>
+            <i data-lucide="${isListening ? 'mic' : 'mic-off'}" size="64" style="margin-bottom:0.5rem"></i>
             <div>${getUIText(lang, isListening)}</div>
         </div>
     `;
@@ -222,10 +222,10 @@ function updateUI() {
 
     // Update Active Classes & Arrow Button
     const swapBtn = els['swap-btn'];
-    
+
     if (state.isListening) {
         els['bar-mic-btn'].classList.add('active');
-        
+
         // Set Arrow Icon based on active side
         if (state.activeSide === 'source') {
             // Listening Bottom (Source) -> Show Up Arrow (Translate to Top)
@@ -249,13 +249,13 @@ function updateUI() {
     // Update Placeholders
     updatePlaceholder(els['source-chat'], state.sourceLang, state.isListening && state.activeSide === 'source');
     updatePlaceholder(els['target-chat'], state.targetLang, state.isListening && state.activeSide === 'target');
-    
+
     if (window.lucide) lucide.createIcons();
 }
 
 function switchActiveSide(side) {
-    if (!state.isListening) return; 
-    if (state.activeSide === side) return; 
+    if (!state.isListening) return;
+    if (state.activeSide === side) return;
 
     state.activeSide = side;
     restartListening();
@@ -281,7 +281,7 @@ function setupSpeechRecognition() {
 
     recognition.onend = () => {
         if (state.isListening && !isRestarting) {
-            try { recognition.start(); } catch(e){}
+            try { recognition.start(); } catch (e) { }
         } else if (!state.isListening) {
             updateUI();
         }
@@ -303,7 +303,7 @@ function setupSpeechRecognition() {
             updateInterimBubble(interim);
         }
     };
-    
+
     recognition.onerror = (e) => {
         if (e.error === 'not-allowed') {
             state.isListening = false;
@@ -323,7 +323,7 @@ function toggleListening() {
         state.isListening = true;
         state.activeSide = 'source'; // Reset to default (Me/Bottom/Up Arrow)
         recognition.lang = state.sourceLang;
-        try { recognition.start(); } catch (e) {}
+        try { recognition.start(); } catch (e) { }
     }
     updateUI();
 }
@@ -335,7 +335,7 @@ function restartListening() {
         setTimeout(() => {
             // Set lang based on active side
             recognition.lang = state.activeSide === 'source' ? state.sourceLang : state.targetLang;
-            try { recognition.start(); } catch (e) {}
+            try { recognition.start(); } catch (e) { }
             isRestarting = false;
         }, 100);
     }
@@ -345,17 +345,17 @@ function restartListening() {
 function handleFinalSpeech(text) {
     // Remove placeholders if valid speech
     const sPh = els['source-chat'].querySelector('.empty-placeholder');
-    if(sPh) sPh.remove();
+    if (sPh) sPh.remove();
     const tPh = els['target-chat'].querySelector('.empty-placeholder');
-    if(tPh) tPh.remove();
+    if (tPh) tPh.remove();
 
     const side = state.activeSide;
-    
+
     if (side === 'source') {
         // I spoke (A) -> Translating to B
         // Bottom (A View): Right, Color A
         addBubble(els['source-chat'], text, 'text-a align-right');
-        
+
         // Translate A -> B
         doTranslate(text, state.sourceLang, state.targetLang).then(trans => {
             // Top (B View): Right (My speech translated), Color B
@@ -367,7 +367,7 @@ function handleFinalSpeech(text) {
         // They spoke (B) -> Translating to A
         // Top (B View): Left (Their speech), Color B
         addBubble(els['target-chat'], text, 'text-b align-left');
-        
+
         // Translate B -> A
         doTranslate(text, state.targetLang, state.sourceLang).then(trans => {
             // Bottom (A View): Left (Their speech translated), Color A
@@ -389,10 +389,10 @@ function addBubble(container, text, classes) {
 function updateInterimBubble(text) {
     // Show interim in the active container
     const container = state.activeSide === 'source' ? els['source-chat'] : els['target-chat'];
-    
+
     // Remove placeholder
     const ph = container.querySelector('.empty-placeholder');
-    if(ph) ph.remove();
+    if (ph) ph.remove();
 
     let bubble = document.getElementById('temp-bubble');
     if (!bubble) {
@@ -410,7 +410,7 @@ function updateInterimBubble(text) {
 
 function removeInterimBubble() {
     const bubble = document.getElementById('temp-bubble');
-    if(bubble) bubble.remove();
+    if (bubble) bubble.remove();
 }
 
 /* --- API --- */
@@ -425,7 +425,7 @@ async function doTranslate(text, from, to) {
 
 function handleSpeak(text, lang) {
     if (state.isMuted) return; // Check Mute State
-    
+
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = lang;
