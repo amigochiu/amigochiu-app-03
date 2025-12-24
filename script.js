@@ -61,7 +61,10 @@ let state = {
     isListening: false,
     theme: 'ocean', // Changed default theme to ocean
     activeSide: 'source', // 'source' or 'target'
-    isMuted: false // Default Not Muted
+    isMuted: false, // Default Not Muted
+    isSpeaking: false, // TTS playing status
+    lastFinalText: '', // Debounce text
+    lastFinalTime: 0 // Debounce time
 };
 
 const els = {};
@@ -304,6 +307,9 @@ function setupSpeechRecognition() {
     };
 
     recognition.onend = () => {
+        // Prevent restart if stopped due to TTS speaking
+        if (state.isSpeaking) return;
+
         if (state.isListening && !isRestarting) {
             try { recognition.start(); } catch (e) { }
         } else if (!state.isListening) {
@@ -321,6 +327,14 @@ function setupSpeechRecognition() {
         }
 
         if (final) {
+            const now = Date.now();
+            // Debounce: Ignore if same text within 2 seconds
+            if (final === state.lastFinalText && (now - state.lastFinalTime < 2000)) {
+                return;
+            }
+            state.lastFinalText = final;
+            state.lastFinalTime = now;
+
             handleFinalSpeech(final);
             removeInterimBubble();
         } else if (interim) {
@@ -461,8 +475,21 @@ async function doTranslate(text, from, to) {
 function handleSpeak(text, lang) {
     if (state.isMuted) return; // Check Mute State
 
+    // Stop recognition to prevent self-hearing loop
+    state.isSpeaking = true;
+    try { recognition.abort(); } catch (e) { }
+
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = lang;
+
+    // Resume recognition after speaking
+    u.onend = u.onerror = () => {
+        state.isSpeaking = false;
+        if (state.isListening) {
+            try { recognition.start(); } catch (e) { }
+        }
+    };
+
     window.speechSynthesis.speak(u);
 }
