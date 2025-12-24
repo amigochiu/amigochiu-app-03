@@ -1,4 +1,4 @@
-# 翻譯蒟蒻 2.0 (Translation Konjac 2.0)
+# 翻譯蒟蒻 2.0 - 雙向語音翻譯 Web App(Translation Konjac 2.0)
 
 這是一個基於 Web 技術開發的即時語音翻譯應用程式。
 
