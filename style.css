@@ -456,8 +456,9 @@ select option {
     color: var(--text-primary);
     transition: opacity 0.3s;
     margin: 1rem;
-    /* Add margin to prevent overflow during scaling */
     transform-origin: center;
+    transform: scale(0.7);
+    /* Set initial size to 70% */
 }
 
 .listening-active .empty-placeholder {
