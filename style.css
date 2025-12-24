@@ -393,7 +393,8 @@ select option {
     }
 
     50% {
-        transform: scale(1.15);
+        transform: scale(1.08);
+        /* Reduced from 1.15 to avoid overflow */
     }
 
     100% {
@@ -454,6 +455,9 @@ select option {
     text-align: center;
     color: var(--text-primary);
     transition: opacity 0.3s;
+    margin: 1rem;
+    /* Add margin to prevent overflow during scaling */
+    transform-origin: center;
 }
 
 .listening-active .empty-placeholder {
