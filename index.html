@@ -1,899 +1,117 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- 修改了標題 -->
     <title>翻譯蒟蒻 2.0</title>
     <meta name="theme-color" content="#ffffff">
-    
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="img/logo.png">
+    <link rel="apple-touch-icon" href="img/logo.png">
+
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Nunito:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    <style>
-        /* --- style.css --- */
-        body {
-            font-family: 'Nunito', 'Noto Sans TC', sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            overflow: hidden;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            color: var(--text-primary);
-        }
-
-        /* --- THEME VARIABLES --- */
-        :root {
-            /* Default: Candy Theme */
-            --bg-gradient: linear-gradient(135deg, #fce7f3 0%, #e0e7ff 100%);
-            --text-primary: #475569;
-            
-            --card-bg: rgba(255, 255, 255, 0.6);
-            --card-border: rgba(255, 255, 255, 0.4);
-            --card-shadow: 0 8px 32px rgba(236, 72, 153, 0.1);
-            
-            --bar-bg: linear-gradient(to right, #f472b6, #a78bfa);
-            --bar-shadow: 0 10px 20px -5px rgba(167, 139, 250, 0.4);
-            --bar-text: #ffffff;
-            --bar-btn-bg: rgba(255, 255, 255, 0.2);
-            --bar-btn-hover: rgba(255, 255, 255, 0.35);
-
-            /* Badge/Text Colors */
-            --color-source: #ec4899; /* Pink (A) */
-            --color-target: #8b5cf6; /* Purple (B) */
-
-            --msg-bubble-bg: rgba(255, 255, 255, 0.95);
-            --mic-active: #ec4899;
-            
-            --active-ring: rgba(236, 72, 153, 0.6);
-        }
-
-        body.theme-summer {
-            --bg-gradient: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
-            --text-primary: #78350f;
-            --bar-bg: linear-gradient(to right, #fbbf24, #f97316);
-            --bar-shadow: 0 10px 20px -5px rgba(251, 146, 60, 0.4);
-            --color-source: #f59e0b;
-            --color-target: #ea580c;
-            --mic-active: #f97316;
-            --active-ring: rgba(249, 115, 22, 0.6);
-        }
-
-        body.theme-ocean {
-            --bg-gradient: linear-gradient(135deg, #ecfeff 0%, #dbeafe 100%);
-            --text-primary: #1e3a8a;
-            --bar-bg: linear-gradient(to right, #22d3ee, #3b82f6);
-            --bar-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
-            --color-source: #06b6d4;
-            --color-target: #3b82f6;
-            --mic-active: #06b6d4;
-            --active-ring: rgba(6, 182, 212, 0.6);
-        }
-
-        body.theme-forest {
-            --bg-gradient: linear-gradient(135deg, #f0fdf4 0%, #ccfbf1 100%);
-            --text-primary: #064e3b;
-            --bar-bg: linear-gradient(to right, #34d399, #10b981);
-            --bar-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
-            --color-source: #10b981;
-            --color-target: #059669;
-            --mic-active: #059669;
-            --active-ring: rgba(16, 185, 129, 0.6);
-        }
-
-        /* --- LAYOUT --- */
-        .app-container {
-            width: 100%;
-            height: 100%;
-            background: var(--bg-gradient);
-            display: flex;
-            justify-content: center;
-        }
-
-        .main-content {
-            width: 100%;
-            max-width: 480px;
-            padding: 1rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            height: 100%;
-            position: relative;
-            box-sizing: border-box;
-        }
-
-        /* --- CARDS --- */
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 1.5rem;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            box-shadow: var(--card-shadow);
-            flex: 1;
-            min-height: 0;
-            overflow: hidden;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        /* Active Listening State for Cards */
-        .card.listening-active {
-            box-shadow: 0 0 0 2px var(--active-ring), var(--card-shadow);
-            background: rgba(255, 255, 255, 0.85);
-        }
-
-        .result-card {
-            transform: rotate(180deg);
-        }
-
-        .card-header {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-            flex: none;
-            z-index: 10;
-        }
-
-        .lang-badge {
-            font-size: 0.85rem;
-            font-weight: 800;
-            background: rgba(255,255,255,0.6);
-            padding: 0.4rem 1rem;
-            border-radius: 99px;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            transition: transform 0.2s;
-        }
-        
-        .card.listening-active .lang-badge {
-            transform: scale(1.02); 
-            background: #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .lang-badge.source-badge { color: var(--color-source); }
-        .lang-badge.target-badge { color: var(--color-target); }
-
-        .chat-container {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            padding-right: 4px;
-            scroll-behavior: smooth;
-        }
-        
-        .chat-container::-webkit-scrollbar { width: 4px; }
-        .chat-container::-webkit-scrollbar-track { background: transparent; }
-        .chat-container::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
-
-        /* --- CHAT BUBBLES --- */
-        .msg-bubble {
-            padding: 0.75rem 1rem;
-            border-radius: 1rem;
-            background: var(--msg-bubble-bg);
-            font-size: 1.1rem;
-            font-weight: 700;
-            line-height: 1.4;
-            width: fit-content;
-            max-width: 85%;
-            word-break: break-word;
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            position: relative;
-        }
-
-        /* Text Colors */
-        .msg-bubble.text-a { color: var(--color-source); }
-        .msg-bubble.text-b { color: var(--color-target); }
-
-        /* Alignments */
-        .msg-bubble.align-right {
-            align-self: flex-end;
-            border-bottom-right-radius: 0.25rem;
-            text-align: right;
-        }
-        
-        .msg-bubble.align-left {
-            align-self: flex-start;
-            border-bottom-left-radius: 0.25rem;
-            text-align: left;
-        }
-
-        /* Temp/Loading */
-        .msg-bubble.temp {
-            opacity: 0.6;
-            border: 1px dashed currentColor;
-            background: transparent;
-        }
-
-        /* --- CONTROL BAR --- */
-        .control-bar {
-            flex: none;
-            background: var(--bar-bg);
-            border-radius: 999px;
-            padding: 0.35rem 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 20;
-            box-shadow: var(--bar-shadow);
-            color: var(--bar-text);
-            height: 3.5rem;
-        }
-
-        .select-wrapper {
-            flex: 1;
-            position: relative;
-            height: 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        select {
-            width: 100%;
-            background: transparent;
-            border: none;
-            font-family: inherit;
-            font-weight: 700;
-            color: white;
-            padding: 0 0.5rem;
-            text-align: center;
-            text-align-last: center;
-            outline: none;
-            cursor: pointer;
-            appearance: none;
-            font-size: 0.95rem;
-        }
-        
-        select option { background: white; color: #333; }
-
-        .bar-btn {
-            background: var(--bar-btn-bg);
-            border: none;
-            cursor: pointer;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            flex-shrink: 0;
-            color: white;
-        }
-
-        .bar-btn:hover { background: var(--bar-btn-hover); transform: scale(1.05); }
-        .bar-btn:active { transform: scale(0.95); }
-
-        #bar-mic-btn.active {
-            background: white;
-            color: var(--mic-active);
-            animation: pulse 1.5s infinite;
-            box-shadow: 0 0 15px rgba(255,255,255,0.6);
-        }
-        
-        /* Swap Button Custom */
-        #swap-btn {
-            background: transparent;
-            width: 40px; 
-            display: flex; 
-            gap: 2px;
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        #swap-btn:active { transform: scale(0.9); }
-
-        /* --- THEME MENU --- */
-        .theme-dropdown-container { position: relative; }
-
-        .theme-menu {
-            position: absolute;
-            bottom: 120%;
-            right: 0;
-            width: 200px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            padding: 0.5rem;
-            z-index: 50;
-            transform-origin: bottom right;
-            animation: scaleIn 0.2s;
-        }
-
-        .theme-option {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            border-radius: 0.75rem;
-            cursor: pointer;
-            font-weight: 700;
-            color: #64748b;
-            transition: all 0.2s;
-        }
-
-        .theme-option:hover { background: #f8fafc; }
-        .theme-option.active { background: #f1f5f9; color: var(--color-source); }
-        .theme-dot { width: 0.75rem; height: 0.75rem; border-radius: 50%; }
-
-        /* Animations */
-        .hidden { display: none !important; }
-        .spin { animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
-        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        @keyframes popIn { from { opacity: 0; transform: translateY(10px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(15, 23, 42, 0.9);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 99px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            z-index: 100;
-            pointer-events: none;
-            animation: popIn 0.3s;
-        }
-        
-        .empty-placeholder {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.4;
-            font-size: 0.9rem;
-            text-align: center;
-            color: var(--text-primary);
-            transition: opacity 0.3s;
-        }
-        
-        .listening-active .empty-placeholder {
-            opacity: 1;
-            color: var(--color-source);
-            font-weight: 700;
-            animation: pulse 2s infinite;
-        }
-    </style>
 </head>
+
 <body class="theme-ocean">
 
-<div class="app-container">
-    <div class="main-content">
-        <!-- TOP CARD: Target Language (B) -->
-        <div class="card result-card" id="card-target">
-            <!-- Pushed to the right (Visual Left when rotated) -->
-            <div class="card-header" style="justify-content: flex-end;"> 
-                <div class="lang-badge target-badge">
-                    <span id="target-lang-label">Japanese</span>
-                </div>
-                <!-- Trash button removed here -->
-            </div>
-            
-            <div class="chat-container" id="target-chat">
-                <!-- Placeholder JS injected -->
-            </div>
-        </div>
-
-        <!-- MIDDLE: Control Bar -->
-        <div class="control-bar">
-            <!-- Mic Toggle -->
-            <button class="bar-btn" id="bar-mic-btn" title="開啟/關閉即時翻譯">
-                <i data-lucide="mic" size="20"></i>
-            </button>
-
-            <!-- Language A (Source) -->
-            <div class="select-wrapper">
-                <select id="source-lang"></select>
-            </div>
-            
-            <!-- Swap / Direction Button -->
-            <button class="bar-btn" id="swap-btn" title="切換方向 / 交換語言">
-                <i data-lucide="arrow-up-down" size="20"></i>
-            </button>
-            
-            <!-- Language B (Target) -->
-            <div class="select-wrapper">
-                <select id="target-lang"></select>
-            </div>
-
-            <!-- Theme -->
-            <div class="theme-dropdown-container">
-                <button class="bar-btn" id="theme-btn">
-                    <i data-lucide="palette" size="20"></i>
-                </button>
-                <div id="theme-menu" class="theme-menu hidden">
-                    <div style="font-size: 0.75rem; font-weight: 800; color: #94a3b8; padding: 0.5rem;">THEMES</div>
-                    <div id="theme-list"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- BOTTOM CARD: Source Language (A) -->
-        <div class="card input-card" id="card-source">
-            <div class="card-header">
-                <!-- New Flex Container for Badge + Mute Button -->
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                    <div class="lang-badge source-badge">
-                        <span id="source-lang-label">Chinese</span>
+    <div class="app-container">
+        <div class="main-content">
+            <!-- TOP CARD: Target Language (B) -->
+            <div class="card result-card" id="card-target">
+                <!-- Pushed to the right (Visual Left when rotated) -->
+                <div class="card-header" style="justify-content: flex-end;">
+                    <div class="lang-badge target-badge">
+                        <span id="target-lang-label">Japanese</span>
                     </div>
-                    <!-- Mute Button -->
-                    <button class="bar-btn" style="width: 28px; height: 28px; background: rgba(0,0,0,0.05); color: var(--color-source);" id="mute-btn" title="語音播放開關">
-                        <i data-lucide="volume-2" size="14"></i>
+                    <!-- Trash button removed here -->
+                </div>
+
+                <div class="chat-container" id="target-chat">
+                    <!-- Placeholder JS injected -->
+                </div>
+            </div>
+
+            <!-- MIDDLE: Control Bar -->
+            <div class="control-bar">
+                <!-- Mic Toggle -->
+                <button class="bar-btn" id="bar-mic-btn" title="開啟/關閉即時翻譯">
+                    <i data-lucide="mic" size="20"></i>
+                </button>
+
+                <!-- Language A (Source) -->
+                <div class="select-wrapper">
+                    <select id="source-lang"></select>
+                </div>
+
+                <!-- Swap / Direction Button -->
+                <button class="bar-btn" id="swap-btn" title="切換方向 / 交換語言">
+                    <i data-lucide="arrow-up-down" size="20"></i>
+                </button>
+
+                <!-- Language B (Target) -->
+                <div class="select-wrapper">
+                    <select id="target-lang"></select>
+                </div>
+
+                <!-- Theme -->
+                <div class="theme-dropdown-container">
+                    <button class="bar-btn" id="theme-btn">
+                        <i data-lucide="palette" size="20"></i>
+                    </button>
+                    <div id="theme-menu" class="theme-menu hidden">
+                        <div style="font-size: 0.75rem; font-weight: 800; color: #94a3b8; padding: 0.5rem;">THEMES</div>
+                        <div id="theme-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTTOM CARD: Source Language (A) -->
+            <div class="card input-card" id="card-source">
+                <div class="card-header">
+                    <!-- New Flex Container for Badge + Mute Button -->
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <div class="lang-badge source-badge">
+                            <span id="source-lang-label">Chinese</span>
+                        </div>
+                        <!-- Mute Button -->
+                        <button class="bar-btn"
+                            style="width: 28px; height: 28px; background: rgba(0,0,0,0.05); color: var(--color-source);"
+                            id="mute-btn" title="語音播放開關">
+                            <i data-lucide="volume-2" size="14"></i>
+                        </button>
+                    </div>
+
+                    <button class="bar-btn"
+                        style="width: 32px; height: 32px; background: rgba(0,0,0,0.05); color: var(--color-source);"
+                        id="clear-btn" title="清除對話">
+                        <i data-lucide="trash-2" size="16"></i>
                     </button>
                 </div>
 
-                <button class="bar-btn" style="width: 32px; height: 32px; background: rgba(0,0,0,0.05); color: var(--color-source);" id="clear-btn" title="清除對話">
-                    <i data-lucide="trash-2" size="16"></i>
-                </button>
-            </div>
-            
-            <div class="chat-container" id="source-chat">
-                 <!-- Placeholder JS injected -->
+                <div class="chat-container" id="source-chat">
+                    <!-- Placeholder JS injected -->
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div id="toast" class="toast hidden">Notification</div>
+    <div id="toast" class="toast hidden">Notification</div>
 
-<script>
-    /* Data */
-    const LANGUAGES = [
-        { code: 'zh-TW', name: '繁體中文', voiceCode: 'zh-TW' },
-        { code: 'en-US', name: 'English', voiceCode: 'en-US' },
-        { code: 'ja-JP', name: '日本語', voiceCode: 'ja-JP' },
-        { code: 'ko-KR', name: '한국어', voiceCode: 'ko-KR' },
-        { code: 'es-ES', name: 'Español', voiceCode: 'es-ES' },
-        { code: 'fr-FR', name: 'Français', voiceCode: 'fr-FR' },
-        { code: 'de-DE', name: 'Deutsch', voiceCode: 'de-DE' },
-        { code: 'th-TH', name: 'ไทย', voiceCode: 'th-TH' },
-        { code: 'vi-VN', name: 'Tiếng Việt', voiceCode: 'vi-VN' },
-    ];
-
-    const UI_STRINGS = {
-        'zh-TW': '點擊麥克風開始說話...',
-        'en-US': 'Tap mic to start speaking...',
-        'ja-JP': 'マイクをタップして話す...',
-        'ko-KR': '마이크를 탭하여 말하기...',
-        'es-ES': 'Toca el micrófono para hablar...',
-        'fr-FR': 'Appuyez sur le micro pour parler...',
-        'de-DE': 'Mikrofon tippen zum Sprechen...',
-        'th-TH': 'แตะไมโครโฟนเพื่อพูด...',
-        'vi-VN': 'Nhấn vào mic để nói...'
-    };
-
-    const LISTEN_STRINGS = {
-        'zh-TW': '正在聆聽中...',
-        'en-US': 'Listening...',
-        'ja-JP': '聞いています...',
-        'ko-KR': '듣고 있어요...',
-        'es-ES': 'Escuchando...',
-        'fr-FR': 'Écoute...',
-        'de-DE': 'Zuhören...',
-        'th-TH': 'กำลังฟัง...',
-        'vi-VN': 'Đang nghe...'
-    };
-
-    const THEMES = [
-        { id: 'candy', name: 'Candy Pop', colorA: '#ec4899', colorB: '#8b5cf6' },
-        { id: 'summer', name: 'Sunny Day', colorA: '#f59e0b', colorB: '#ea580c' },
-        { id: 'ocean', name: 'Ocean Breeze', colorA: '#06b6d4', colorB: '#3b82f6' },
-        { id: 'forest', name: 'Deep Forest', colorA: '#10b981', colorB: '#059669' },
-    ];
-
-    /* State */
-    let state = {
-        sourceLang: 'zh-TW', // A
-        targetLang: 'ja-JP', // B
-        isListening: false,
-        theme: 'ocean', // Changed default theme to ocean
-        activeSide: 'source', // 'source' or 'target'
-        isMuted: false // Default Not Muted
-    };
-
-    const els = {};
-    let recognition = null;
-    let isRestarting = false;
-
-    // Helper functions moved to top
-    function showToast(msg) {
-        if (!els['toast']) return;
-        els['toast'].textContent = msg;
-        els['toast'].classList.remove('hidden');
-        setTimeout(() => els['toast'].classList.add('hidden'), 3000);
-    }
-
-    /* Init */
-    document.addEventListener('DOMContentLoaded', () => {
-        const getEl = (id) => document.getElementById(id);
-        const elementsId = [
-            'source-lang', 'target-lang', 'theme-btn', 'theme-menu', 'theme-list',
-            'bar-mic-btn', 'swap-btn', 'clear-btn', 'top-clear-btn',
-            'source-chat', 'target-chat', 'source-lang-label', 'target-lang-label',
-            'card-source', 'card-target', 'toast', 'mute-btn'
-        ];
-        elementsId.forEach(id => els[id] = getEl(id));
-
-        initLanguages();
-        initThemes();
-        bindEvents();
-        
-        // Initial Render
-        renderPlaceholder(els['source-chat'], state.sourceLang, false);
-        renderPlaceholder(els['target-chat'], state.targetLang, false);
-
-        if (window.lucide) lucide.createIcons();
-        setupSpeechRecognition();
-        updateUI();
-    });
-
-    function initLanguages() {
-        const createOptions = (select) => {
-            LANGUAGES.forEach(lang => {
-                const opt = document.createElement('option');
-                opt.value = lang.code;
-                opt.textContent = lang.name;
-                select.appendChild(opt);
-            });
-        };
-        createOptions(els['source-lang']);
-        createOptions(els['target-lang']);
-
-        els['source-lang'].value = state.sourceLang;
-        els['target-lang'].value = state.targetLang;
-    }
-
-    function initThemes() {
-        els['theme-list'].innerHTML = '';
-        THEMES.forEach(t => {
-            const btn = document.createElement('div');
-            btn.className = 'theme-option';
-            btn.innerHTML = `
-                <div style="display:flex; gap:4px;">
-                    <div class="theme-dot" style="background: ${t.colorA}"></div>
-                    <div class="theme-dot" style="background: ${t.colorB}"></div>
-                </div>
-                <span>${t.name}</span>
-            `;
-            btn.onclick = () => setTheme(t.id);
-            els['theme-list'].appendChild(btn);
-        });
-    }
-
-    function bindEvents() {
-        els['source-lang'].onchange = (e) => {
-            state.sourceLang = e.target.value;
-            restartListening();
-            updateUI();
-        };
-
-        els['target-lang'].onchange = (e) => {
-            state.targetLang = e.target.value;
-            restartListening();
-            updateUI();
-        };
-
-        // Swap Btn Click Handler
-        els['swap-btn'].onclick = () => {
-            if (state.isListening) {
-                // Direction Toggle Mode
-                switchActiveSide(state.activeSide === 'source' ? 'target' : 'source');
-            } else {
-                // Language Swap Mode
-                [state.sourceLang, state.targetLang] = [state.targetLang, state.sourceLang];
-                els['source-lang'].value = state.sourceLang;
-                els['target-lang'].value = state.targetLang;
-                updateUI();
-            }
-        };
-
-        els['theme-btn'].onclick = (e) => {
-            e.stopPropagation();
-            els['theme-menu'].classList.toggle('hidden');
-        };
-
-        document.body.onclick = () => els['theme-menu']?.classList.add('hidden');
-
-        els['bar-mic-btn'].onclick = toggleListening;
-        
-        // Clear buttons
-        els['clear-btn'].onclick = clearAll;
-
-        // Mute Button Toggle
-        els['mute-btn'].onclick = () => {
-            state.isMuted = !state.isMuted;
-            const iconName = state.isMuted ? 'volume-x' : 'volume-2';
-            els['mute-btn'].innerHTML = `<i data-lucide="${iconName}" size="14"></i>`;
-            if (window.lucide) lucide.createIcons();
-            showToast(state.isMuted ? '語音播放已關閉' : '語音播放已開啟');
-        };
-    }
-
-    function clearAll() {
-        els['source-chat'].innerHTML = '';
-        els['target-chat'].innerHTML = '';
-        renderPlaceholder(els['source-chat'], state.sourceLang, state.isListening && state.activeSide === 'source');
-        renderPlaceholder(els['target-chat'], state.targetLang, state.isListening && state.activeSide === 'target');
-    }
-
-    function setTheme(id) {
-        document.body.className = `theme-${id}`;
-        state.theme = id;
-        initThemes();
-    }
-
-    function getLangName(code) {
-        return LANGUAGES.find(l => l.code === code)?.name || code;
-    }
-
-    function getUIText(lang, isListening) {
-        if (isListening) return LISTEN_STRINGS[lang] || LISTEN_STRINGS['en-US'];
-        return UI_STRINGS[lang] || UI_STRINGS['en-US'];
-    }
-
-    function renderPlaceholder(container, lang, isListening) {
-        if (!container) return;
-        container.innerHTML = `
-            <div class="empty-placeholder">
-                <i data-lucide="${isListening ? 'mic' : 'mic-off'}" size="32" style="margin-bottom:0.5rem"></i>
-                <div>${getUIText(lang, isListening)}</div>
-            </div>
-        `;
-        if (window.lucide) lucide.createIcons();
-    }
-
-    /* Helper to update placeholder if it exists */
-    function updatePlaceholder(container, lang, isListening) {
-        if (!container) return;
-        const ph = container.querySelector('.empty-placeholder');
-        if (ph) {
-            // Re-render completely to update icon and text
-            renderPlaceholder(container, lang, isListening);
-        } else if (container.children.length === 0) {
-            // If empty, render
-            renderPlaceholder(container, lang, isListening);
-        }
-    }
-
-    function updateUI() {
-        els['source-lang-label'].textContent = getLangName(state.sourceLang);
-        els['target-lang-label'].textContent = getLangName(state.targetLang);
-
-        // Update Active Classes & Arrow Button
-        const swapBtn = els['swap-btn'];
-        
-        if (state.isListening) {
-            els['bar-mic-btn'].classList.add('active');
-            
-            // Set Arrow Icon based on active side
-            if (state.activeSide === 'source') {
-                // Listening Bottom (Source) -> Show Up Arrow (Translate to Top)
-                swapBtn.innerHTML = '<i data-lucide="arrow-up" size="24"></i>';
-                els['card-source'].classList.add('listening-active');
-                els['card-target'].classList.remove('listening-active');
-            } else {
-                // Listening Top (Target) -> Show Down Arrow (Translate to Bottom)
-                swapBtn.innerHTML = '<i data-lucide="arrow-down" size="24"></i>';
-                els['card-source'].classList.remove('listening-active');
-                els['card-target'].classList.add('listening-active');
-            }
-        } else {
-            // Idle State -> Show Swap Icon
-            els['bar-mic-btn'].classList.remove('active');
-            swapBtn.innerHTML = '<i data-lucide="arrow-up-down" size="20"></i>';
-            els['card-source'].classList.remove('listening-active');
-            els['card-target'].classList.remove('listening-active');
-        }
-
-        // Update Placeholders
-        updatePlaceholder(els['source-chat'], state.sourceLang, state.isListening && state.activeSide === 'source');
-        updatePlaceholder(els['target-chat'], state.targetLang, state.isListening && state.activeSide === 'target');
-        
-        if (window.lucide) lucide.createIcons();
-    }
-
-    function switchActiveSide(side) {
-        if (!state.isListening) return; 
-        if (state.activeSide === side) return; 
-
-        state.activeSide = side;
-        restartListening();
-        updateUI();
-    }
-
-    /* --- SPEECH RECOGNITION (SINGLE INSTANCE) --- */
-    function setupSpeechRecognition() {
-        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-            showToast('瀏覽器不支援語音辨識');
-            return;
-        }
-
-        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-        recognition = new SR();
-        recognition.continuous = true;
-        recognition.interimResults = true;
-
-        recognition.onstart = () => {
-            state.isListening = true;
-            updateUI();
-        };
-
-        recognition.onend = () => {
-            if (state.isListening && !isRestarting) {
-                try { recognition.start(); } catch(e){}
-            } else if (!state.isListening) {
-                updateUI();
-            }
-        };
-
-        recognition.onresult = (event) => {
-            let final = '';
-            let interim = '';
-
-            for (let i = event.resultIndex; i < event.results.length; ++i) {
-                if (event.results[i].isFinal) final += event.results[i][0].transcript;
-                else interim += event.results[i][0].transcript;
-            }
-
-            if (final) {
-                handleFinalSpeech(final);
-                removeInterimBubble();
-            } else if (interim) {
-                updateInterimBubble(interim);
-            }
-        };
-        
-        recognition.onerror = (e) => {
-            if (e.error === 'not-allowed') {
-                state.isListening = false;
-                updateUI();
-                showToast('請允許麥克風權限');
-            }
-        };
-    }
-
-    function toggleListening() {
-        if (!recognition) return;
-
-        if (state.isListening) {
-            state.isListening = false;
-            recognition.stop();
-        } else {
-            state.isListening = true;
-            state.activeSide = 'source'; // Reset to default (Me/Bottom/Up Arrow)
-            recognition.lang = state.sourceLang;
-            try { recognition.start(); } catch (e) {}
-        }
-        updateUI();
-    }
-
-    function restartListening() {
-        if (state.isListening) {
-            isRestarting = true;
-            recognition.stop();
-            setTimeout(() => {
-                // Set lang based on active side
-                recognition.lang = state.activeSide === 'source' ? state.sourceLang : state.targetLang;
-                try { recognition.start(); } catch (e) {}
-                isRestarting = false;
-            }, 100);
-        }
-    }
-
-    /* --- LOGIC HANDLER --- */
-    function handleFinalSpeech(text) {
-        // Remove placeholders if valid speech
-        const sPh = els['source-chat'].querySelector('.empty-placeholder');
-        if(sPh) sPh.remove();
-        const tPh = els['target-chat'].querySelector('.empty-placeholder');
-        if(tPh) tPh.remove();
-
-        const side = state.activeSide;
-        
-        if (side === 'source') {
-            // I spoke (A) -> Translating to B
-            // Bottom (A View): Right, Color A
-            addBubble(els['source-chat'], text, 'text-a align-right');
-            
-            // Translate A -> B
-            doTranslate(text, state.sourceLang, state.targetLang).then(trans => {
-                // Top (B View): Right (My speech translated), Color B
-                addBubble(els['target-chat'], trans, 'text-b align-right');
-                handleSpeak(trans, state.targetLang);
-            });
-
-        } else {
-            // They spoke (B) -> Translating to A
-            // Top (B View): Left (Their speech), Color B
-            addBubble(els['target-chat'], text, 'text-b align-left');
-            
-            // Translate B -> A
-            doTranslate(text, state.targetLang, state.sourceLang).then(trans => {
-                // Bottom (A View): Left (Their speech translated), Color A
-                addBubble(els['source-chat'], trans, 'text-a align-left');
-                handleSpeak(trans, state.sourceLang);
-            });
-        }
-    }
-
-    /* --- BUBBLES --- */
-    function addBubble(container, text, classes) {
-        const bubble = document.createElement('div');
-        bubble.className = `msg-bubble ${classes}`;
-        bubble.textContent = text;
-        container.appendChild(bubble);
-        container.scrollTop = container.scrollHeight;
-    }
-
-    function updateInterimBubble(text) {
-        // Show interim in the active container
-        const container = state.activeSide === 'source' ? els['source-chat'] : els['target-chat'];
-        
-        // Remove placeholder
-        const ph = container.querySelector('.empty-placeholder');
-        if(ph) ph.remove();
-
-        let bubble = document.getElementById('temp-bubble');
-        if (!bubble) {
-            bubble = document.createElement('div');
-            bubble.id = 'temp-bubble';
-            // Align based on side (Source=Right, Target=Left)
-            const align = state.activeSide === 'source' ? 'align-right' : 'align-left';
-            const color = state.activeSide === 'source' ? 'text-a' : 'text-b';
-            bubble.className = `msg-bubble temp ${align} ${color}`;
-            container.appendChild(bubble);
-        }
-        bubble.textContent = text;
-        container.scrollTop = container.scrollHeight;
-    }
-
-    function removeInterimBubble() {
-        const bubble = document.getElementById('temp-bubble');
-        if(bubble) bubble.remove();
-    }
-
-    /* --- API --- */
-    async function doTranslate(text, from, to) {
-        try {
-            const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|${to}`;
-            const res = await fetch(url);
-            const data = await res.json();
-            return data.responseStatus === 200 ? data.responseData.translatedText : 'Error';
-        } catch (e) { console.error(e); return 'Error'; }
-    }
-
-    function handleSpeak(text, lang) {
-        if (state.isMuted) return; // Check Mute State
-        
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang;
-        window.speechSynthesis.speak(u);
-    }
-</script>
+    <!-- Scripts -->
+    <script src="script.js"></script>
 
 </body>
+
 </html>
