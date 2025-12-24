@@ -91,7 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
     elementsId.forEach(id => els[id] = getEl(id));
 
     initLanguages();
+    initLanguages();
     initThemes();
+    setTheme(state.theme); // Apply default theme logic
     bindEvents();
 
     // Initial Render
