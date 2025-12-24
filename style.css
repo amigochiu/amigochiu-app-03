@@ -389,16 +389,15 @@ select option {
 
 @keyframes pulse {
     0% {
-        transform: scale(1);
+        transform: scale(0.7);
     }
 
     50% {
-        transform: scale(1.08);
-        /* Reduced from 1.15 to avoid overflow */
+        transform: scale(0.8);
     }
 
     100% {
-        transform: scale(1);
+        transform: scale(0.7);
     }
 }
 
